@@ -5,3 +5,5 @@ lib
 .Pyt
 out.json
 scrapy.log
+.plotly/.credentials
+.Python
