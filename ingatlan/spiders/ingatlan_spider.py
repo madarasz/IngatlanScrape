@@ -11,7 +11,8 @@ class IngatlanSpider(scrapy.Spider):
     name = "ingatlan"
     start_urls = [
         #'https://ingatlan.com/lista/elado+lakas+xvii-ker',
-        'https://ingatlan.com/lista/elado+haz+xvii-ker',
+        #'https://ingatlan.com/lista/elado+haz+xvii-ker',
+        'https://ingatlan.com/lista/elado+lakas+xiii-ker'
     ]
 
     def __init__(self):
@@ -22,7 +23,6 @@ class IngatlanSpider(scrapy.Spider):
         engine = db_connect()
         create_table(engine)
         self.Session = sessionmaker(bind=engine)
-
     def parse(self, response):
         session = self.Session()
         for hirdetes in response.css('div.listing__card'):

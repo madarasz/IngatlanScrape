@@ -13,7 +13,7 @@ import numpy as np
 engine = db_connect()
 conn = engine.connect()
 
-s = select([IngatlanDB.id, IngatlanDB.alapterulet, IngatlanDB.epites_tipus, IngatlanDB.szobak_egesz, IngatlanDB.szobak_fel, ArDB.ar]).where(IngatlanDB.id == ArDB.ingatlan_id).where(IngatlanDB.ingatlan_tipus == u'lakás')
+s = select([IngatlanDB.id, IngatlanDB.alapterulet, IngatlanDB.epites_tipus, IngatlanDB.szobak_egesz, IngatlanDB.szobak_fel, ArDB.ar]).where(IngatlanDB.id == ArDB.ingatlan_id).where(IngatlanDB.ingatlan_tipus == u'lakás').where(IngatlanDB.cim.like("%13. kerület%"))
 result = conn.execute(s).fetchall()
 terulet = []
 ar = []
@@ -32,15 +32,21 @@ for row in result:
     szobak.append(10+5*(row['szobak_egesz']+row['szobak_fel']*0.5))
     hover_text.append("Terulet: " + str(row['alapterulet']) + " - Tipus: " + row['epites_tipus'] + " - Ar: " + str(row['ar']/1000000) + "M Ft - id: " + str(row['id'])) 
 
-fig = go.Figure()
-fig.add_scatter(x=terulet,
-                y=ar,
-                mode='markers',
-                text=hover_text,
-                hoverinfo='text',
-                marker={'size': szobak,
-                        'color': epites,
-                        'opacity': 0.6,
-                        'colorscale': 'Viridis'
-                       })
+trace = go.Scatter( 
+    x=terulet,
+    y=ar,
+    mode='markers',
+    text=hover_text,
+    hoverinfo='text',
+    marker={'size': szobak,
+            'color': epites,
+            'opacity': 0.6,
+            'colorscale': 'Viridis'
+            }
+)
+data = go.Data([trace])
+layout = go.Layout(
+    title='XIII.ker lakasok'
+)
+fig = go.Figure(data=data, layout=layout)
 py.plot(fig)

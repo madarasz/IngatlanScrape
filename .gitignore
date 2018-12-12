@@ -7,3 +7,4 @@ out.json
 scrapy.log
 .plotly/.credentials
 .Python
+.vscode
