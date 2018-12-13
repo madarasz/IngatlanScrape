@@ -10,10 +10,17 @@ from models import IngatlanDB, ArDB, db_connect, create_table
 class IngatlanSpider(scrapy.Spider):
     name = "ingatlan"
     start_urls = [
-        #'https://ingatlan.com/lista/elado+lakas+xvii-ker',
-        #'https://ingatlan.com/lista/elado+haz+xvii-ker',
-        #'https://ingatlan.com/lista/elado+lakas+xiii-ker'
-        'https://ingatlan.com/lista/elado+lakas+xi-ker'
+        'https://ingatlan.com/lista/elado+lakas+ujlipotvaros',
+        'https://ingatlan.com/lista/elado+lakas+ujpest-kozpont',
+        'https://ingatlan.com/szukites/elado+haz+xvi-ker',
+        'https://ingatlan.com/szukites/elado+haz+xvii-ker',
+        'https://ingatlan.com/szukites/elado+haz+xviii-ker',
+        'https://ingatlan.com/szukites/elado+haz+xix-ker',
+        'https://ingatlan.com/szukites/elado+haz+xx-ker',
+        'https://ingatlan.com/szukites/elado+haz+gyomro',
+        'https://ingatlan.com/szukites/elado+haz+csomor',
+        'https://ingatlan.com/szukites/elado+haz+maglod',
+        'https://ingatlan.com/szukites/elado+haz+nagytarcsa',
     ]
 
     def __init__(self):
@@ -61,7 +68,7 @@ class IngatlanSpider(scrapy.Spider):
 
 
         next_page = response.xpath("//a[contains(@class,'pagination__button') and contains(.,'vetkez')]/@href").extract_first()
-        logging.info("NEXT PAGE:"+next_page)
+        logging.info("NEXT PAGE:"+str(next_page))
         if next_page is not None:
             yield response.follow(next_page, self.parse)
 
