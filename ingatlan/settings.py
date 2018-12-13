@@ -102,3 +102,6 @@ CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?char
 # logging
 LOG_FILE = 'scrapy.log'
 LOG_LEVEL = 'DEBUG'
+
+# allow redirects
+HTTPERROR_ALLOWED_CODES = [301]
