@@ -12,7 +12,8 @@ class IngatlanSpider(scrapy.Spider):
     start_urls = [
         #'https://ingatlan.com/lista/elado+lakas+xvii-ker',
         #'https://ingatlan.com/lista/elado+haz+xvii-ker',
-        'https://ingatlan.com/lista/elado+lakas+xiii-ker'
+        #'https://ingatlan.com/lista/elado+lakas+xiii-ker'
+        'https://ingatlan.com/lista/elado+lakas+xi-ker'
     ]
 
     def __init__(self):
@@ -31,7 +32,7 @@ class IngatlanSpider(scrapy.Spider):
                 'ar': self.millions_to_int(hirdetes.css('div.price::text').re_first(r'[0-9.]+')),
                 'id': hirdetes.css('a.listing__thumbnail::attr("href")').re_first(r'[0-9]+$')
             }
-            # checking DB
+            # checking DB for latest price
             hirdetes_exists = session.query(exists().where(ArDB.ingatlan_id==parsed_short['id'])).scalar()
             try:
                 ar_in_db = session.query(ArDB).filter(ArDB.ingatlan_id==parsed_short['id']).order_by(ArDB.frissitve.desc()).one().ar
@@ -99,6 +100,7 @@ class IngatlanSpider(scrapy.Spider):
             'pince': response.xpath('//div[@class="paramterers"]//td[contains(.,"Pince")]/../td[2]/text()').extract_first(),
             'panelprogram': response.xpath('//div[@class="paramterers"]//td[contains(.," Panelprogram")]/../td[2]/text()').extract_first(),
             'parkolohely_ara': response.xpath('//div[@class="paramterers"]//td[contains(.,"hely ") and contains(.,"Park")]/../td[2]/text()').extract_first(),
+            'magan_hirdetes': (response.css('div.agent-profile').extract_first() is None)
         }
         self.process_data(parsed_data)
         yield IngatlanItem(parsed_data)
@@ -107,7 +109,7 @@ class IngatlanSpider(scrapy.Spider):
         for key, value in target.items():
             if (value == "nincs megadva"):
                 target[key] = None
-            elif (value is not None and value.replace(" ", "").isdigit()):
+            elif (value is not None and isinstance(value, str) and value.replace(" ", "").isdigit()):
                 target[key] = int(value.replace(" ", ""))
             elif (value == 'nem' or value == 'nincs' or value == u'3 m-nél alacsonyabb'):
                 target[key] = False

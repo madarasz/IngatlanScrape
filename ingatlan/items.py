@@ -41,4 +41,5 @@ class IngatlanItem(scrapy.Item):
     panelprogram = scrapy.Field()
     parkolohely_ara = scrapy.Field()
     pince = scrapy.Field()
+    magan_hirdetes = scrapy.Field()
 

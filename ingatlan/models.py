@@ -62,6 +62,7 @@ class IngatlanDB(DeclarativeBase):
     kertkapcsolatos = Column('kertkapcsolatos', Boolean(), nullable=True)
     panelprogram = Column('panelprogram', Boolean(), nullable=True)
     pince = Column('pince', Boolean(), nullable=True)
+    magan_hirdetes = Column('magan_hirdetes', Boolean(), nullable=True)
 
 class ArDB(DeclarativeBase):
     __tablename__ = "ar"
