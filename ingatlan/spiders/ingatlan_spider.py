@@ -42,7 +42,7 @@ class IngatlanSpider(scrapy.Spider):
             # checking DB for latest price
             hirdetes_exists = session.query(exists().where(ArDB.ingatlan_id==parsed_short['id'])).scalar()
             try:
-                ar_in_db = session.query(ArDB).filter(ArDB.ingatlan_id==parsed_short['id']).order_by(ArDB.frissitve.desc()).one().ar
+                ar_in_db = session.query(ArDB).filter(ArDB.ingatlan_id==parsed_short['id']).order_by(ArDB.frissitve.desc()).first().ar
             except:
                 ar_in_db = 0
 
@@ -51,7 +51,7 @@ class IngatlanSpider(scrapy.Spider):
                 logging.info('ADDING NEW INGATLAN: '+str(parsed_short['id']))
                 yield response.follow(hirdetes.css('a.listing__thumbnail::attr("href")').extract_first(), self.parse_details)    
             elif (ar_in_db != parsed_short['ar']):
-                logging.info('HAVE THAT INGATLAN('+str(parsed_short['id'])+'), UPDATING PRICE TO: ' + str(parsed_short['ar']))
+                logging.info("HAVE THAT INGATLAN({}), UPDATING PRICE FROM {} TO {}".format(parsed_short['id'], ar_in_db, parsed_short['ar']))
                 ar = ArDB()
                 ar.ar = parsed_short['ar']
                 ar.ingatlan_id = parsed_short['id']
