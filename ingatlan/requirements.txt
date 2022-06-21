@@ -16,7 +16,7 @@ jsonschema==2.6.0
 jupyter-core==4.4.0
 lxml==4.2.5
 nbformat==4.4.0
-numpy==1.15.4
+numpy==1.22.0
 parsel==1.5.1
 plotly==3.4.2
 pyasn1==0.4.4
